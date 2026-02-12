@@ -134,45 +134,48 @@ t33 = st.checkbox("iii. Menunjukkan kesungguhan/belajar secara kendiri", key="46
 
 st.divider()
 
-# --- PROSES JANA LAPORAN ---
+# --- BUTTON JANA ---
 if st.button("🚀 JANA LAPORAN AI"):
-    # Cek input asas
-    if guru_opt == "--- Pilih Nama Guru ---" or kls_opt == "--- Pilih Kelas ---" or sub_opt == "--- Pilih Subjek ---":
-        st.error("Sila lengkapkan maklumat Guru, Subjek dan Kelas!")
-    elif kod_admin != "KINARUT2024":
-        st.error("Kod Autoriti Salah! Sila masukkan kod yang betul di sidebar.")
+    # 1. Cek maklumat asas dulu
+    if guru_opt == "--- Pilih Nama Guru ---" or kls_opt == "--- Pilih Kelas ---" or sub_opt == "--- Pilih Subjek ---" or mod_opt == "--- Pilih Mod ---":
+        st.error("Sila lengkapkan maklumat Guru, Subjek, Kelas dan Mod Pencerapan!")
+    
     else:
-        try:
-            # Ambik API Key dari Secret
-            API_KEY = st.secrets["GEMINI_API_KEY"]
-            genai.configure(api_key=API_KEY)
-            model = genai.GenerativeModel('gemini-1.5-flash')
-            
-            # Kumpul data untuk prompt
-            summary = f"Guru: {guru_opt}, Subjek: {sub_opt}, Kelas: {kls_opt}, Mod: {mod_opt}. Pelibatan Murid: {peratus}%."
-            
-            prompt = f"""
-            Anda adalah pakar SKPMg2. Berdasarkan data berikut: {summary}, 
-            sila tulis laporan pencerapan profesional dalam Bahasa Melayu.
-            
-            Kandungan Laporan:
-            1. RUMUSAN KEKUATAN: Berdasarkan kriteria Standard 4.
-            2. KELEMAHAN & ASPEK PENAMBAHBAIKAN.
-            3. CADANGAN INTERVENSI: Berikan 3 cadangan yang praktikal untuk guru ini.
-            
-            Gunakan nada yang membina (constructive) dan formal.
-            """
-            
-            with st.spinner('Sila tunggu, AI sedang menjana ulasan terbaik...'):
-                res = model.generate_content(prompt)
-                st.success("Laporan Berjaya Dijana!")
-                st.markdown("---")
-                st.markdown(res.text)
-                st.download_button(
-                    label="📥 Muat Turun Laporan (.txt)",
-                    data=res.text,
-                    file_name=f"Laporan_PdPc_{guru_opt}_{sub_opt}.txt",
-                    mime="text/plain"
-                )
-        except Exception as e:
-            st.error(f"Ralat Sistem: Pastikan GEMINI_API_KEY telah dimasukkan dalam Secrets Streamlit. (Error: {e})")
+        # 2. Logik Semakan Kod Autoriti
+        # Jika bukan "Kendiri", wajib semak password
+        is_authorized = False
+        
+        if mod_opt == "Kendiri":
+            is_authorized = True
+        else:
+            if kod_admin == "KINARUT2024":
+                is_authorized = True
+            else:
+                st.error("Kod Autoriti Salah! Hanya pencerapan 'Kendiri' tidak memerlukan kod.")
+
+        # 3. Jika lulus semakan, baru panggil AI
+        if is_authorized:
+            try:
+                API_KEY = st.secrets["GEMINI_API_KEY"]
+                genai.configure(api_key=API_KEY)
+                model = genai.GenerativeModel('gemini-1.5-flash')
+                
+                summary = f"Guru: {guru_opt}, Subjek: {sub_opt}, Kelas: {kls_opt}, Mod: {mod_opt}. Pelibatan Murid: {peratus}%."
+                
+                prompt = f"""
+                Tulis ulasan profesional SKPMg2 Standard 4 untuk:
+                {summary}.
+                
+                Format:
+                1. RUMUSAN KEKUATAN.
+                2. KELEMAHAN & PENAMBAHBAIKAN.
+                3. CADANGAN INTERVENSI.
+                """
+                
+                with st.spinner('AI sedang memproses ulasan kendiri anda...'):
+                    res = model.generate_content(prompt)
+                    st.success("Laporan Berjaya Dijana!")
+                    st.markdown(res.text)
+                    st.download_button("📥 Muat Turun Laporan", res.text, file_name=f"Kendiri_{guru_opt}.txt")
+            except Exception as e:
+                st.error(f"Ralat API: Sila pastikan Secrets sudah diset. {e}")
