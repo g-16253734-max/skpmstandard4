@@ -54,4 +54,103 @@ st.markdown(f'<div class="score-box">Skor: {s411a} / 3</div>', unsafe_allow_html
 
 # 4.1.1 (b)
 st.markdown('<span class="section-title">4.1.1 (b) RPH: Menentukan kaedah pentaksiran</span>', unsafe_allow_html=True)
-b1 = st.checkbox("i. Mengikut aras keupayaan murid (Pentaksiran)", key="411bi
+b1 = st.checkbox("i. Mengikut aras keupayaan murid (Pentaksiran)", key="411bi")
+b2 = st.checkbox("ii. Mengikut peruntukan masa (Pentaksiran)", key="411bii")
+b3 = st.checkbox("iii. Mengikut ketetapan kurikulum (Pentaksiran)", key="411biii")
+s411b = calculate_score([b1, b2, b3])
+st.markdown(f'<div class="score-box">Skor: {s411b} / 3</div>', unsafe_allow_html=True)
+
+# 4.2
+st.subheader("4.2: GURU SEBAGAI PENGAWAL")
+st.markdown('<span class="section-title">4.2.1 (a) Mengawal proses pembelajaran</span>', unsafe_allow_html=True)
+c1 = st.checkbox("i. Mengelola isi pelajaran/skop", key="421ai")
+c2 = st.checkbox("ii. Menepati objektif pembelajaran", key="421aii")
+c3 = st.checkbox("iii. Mengikut aras keupayaan murid secara berterusan", key="421aiii")
+s421a = calculate_score([c1, c2, c3])
+st.markdown(f'<div class="score-box">Skor: {s421a} / 3</div>', unsafe_allow_html=True)
+
+st.markdown('<span class="section-title">4.2.2 (a) Mengawal suasana pembelajaran</span>', unsafe_allow_html=True)
+d1 = st.checkbox("i. Mengurus susun atur murid", key="422ai")
+d2 = st.checkbox("ii. Mewujudkan suasana menyeronokkan", key="422aii")
+d3 = st.checkbox("iii. Secara berhemah & menyeluruh", key="422aiii")
+s422a = calculate_score([d1, d2, d3])
+st.markdown(f'<div class="score-box">Skor: {s422a} / 3</div>', unsafe_allow_html=True)
+
+# 4.3
+st.subheader("4.3: GURU SEBAGAI PEMBIMBING")
+st.markdown('<span class="section-title">4.3.1 (a) Memberi tunjuk ajar/panduan</span>', unsafe_allow_html=True)
+e1 = st.checkbox("i. Memberi tunjuk ajar yang betul dan tepat", key="431ai")
+e2 = st.checkbox("ii. Mengikut aras keupayaan murid", key="431aii")
+e3 = st.checkbox("iii. Secara berhemah & bersungguh-sungguh", key="431aiii")
+s431a = calculate_score([e1, e2, e3])
+st.markdown(f'<div class="score-box">Skor: {s431a} / 3</div>', unsafe_allow_html=True)
+
+# 4.4
+st.subheader("4.4: GURU SEBAGAI PENDORONG")
+st.markdown('<span class="section-title">4.4.1 (a) Mendorong minda murid</span>', unsafe_allow_html=True)
+f1 = st.checkbox("i. Merangsang murid berkomunikasi", key="441ai")
+f2 = st.checkbox("ii. Memberi peluang murid memberi respon", key="441aii")
+f3 = st.checkbox("iii. Secara berterusan & berkesan", key="441aiii")
+s441a = calculate_score([f1, f2, f3])
+st.markdown(f'<div class="score-box">Skor: {s441a} / 3</div>', unsafe_allow_html=True)
+
+st.markdown('<span class="section-title">4.4.2 (a) Mendorong emosi murid</span>', unsafe_allow_html=True)
+g1 = st.checkbox("i. Memberi pujian/galakan terhadap perlakuan positif", key="442ai")
+g2 = st.checkbox("ii. Memberi keyakinan diri dalam berkomunikasi", key="442aii")
+g3 = st.checkbox("iii. Secara berhemah & menyeluruh", key="442aiii")
+s442a = calculate_score([g1, g2, g3])
+st.markdown(f'<div class="score-box">Skor: {s442a} / 3</div>', unsafe_allow_html=True)
+
+# 4.5
+st.subheader("4.5: GURU SEBAGAI PENILAI")
+st.markdown('<span class="section-title">4.5.1 (a) Melaksanakan pentaksiran</span>', unsafe_allow_html=True)
+h1 = st.checkbox("i. Menggunakan pelbagai kaedah pentaksiran", key="451ai")
+h2 = st.checkbox("ii. Memberi maklum balas hasil kerja murid", key="451aii")
+h3 = st.checkbox("iii. Secara menyeluruh & berterusan", key="451aiii")
+s451a = calculate_score([h1, h2, h3])
+st.markdown(f'<div class="score-box">Skor: {s451a} / 3</div>', unsafe_allow_html=True)
+
+# 4.6
+st.subheader("4.6: MURID SEBAGAI PEMBELAJAR AKTIF")
+peratus = st.slider("Peratus Pelibatan Murid Secara Aktif:", 0, 100, 85)
+st.markdown('<span class="section-title">4.6.1 (a) Pelibatan murid secara aktif</span>', unsafe_allow_html=True)
+i1 = st.checkbox("i. Memberi respon berkaitan isi pelajaran", key="461ai")
+i2 = st.checkbox("ii. Berkomunikasi dalam aktiviti", key="461aii")
+i3 = st.checkbox("iii. Menunjukkan kesungguhan/belajar sendiri", key="461aiii")
+s461a = calculate_score([i1, i2, i3])
+st.markdown(f'<div class="score-box">Skor: {s461a} / 3</div>', unsafe_allow_html=True)
+
+st.divider()
+
+# --- LOGIK JANA ---
+if st.button("🚀 JANA LAPORAN AI"):
+    if guru_opt == "--- Pilih Nama Guru ---" or kls_opt == "--- Pilih Kelas ---" or mod_opt == "--- Pilih Mod ---":
+        st.error("Sila lengkapkan maklumat utama!")
+    else:
+        authorized = (mod_opt == "Kendiri") or (kod_admin == "KINARUT2024")
+        if not authorized:
+            st.error("Kod Autoriti Salah!")
+        else:
+            try:
+                genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+                # Fallback model selection
+                available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
+                model_to_use = "models/gemini-1.5-flash" if "models/gemini-1.5-flash" in available_models else available_models[0]
+                
+                model = genai.GenerativeModel(model_to_use)
+                
+                # Sediakan ringkasan skor untuk AI
+                skor_summary = f"4.1.1a:{s411a}, 4.1.1b:{s411b}, 4.2.1a:{s421a}, 4.2.2a:{s422a}, 4.3.1a:{s431a}, 4.4.1a:{s441a}, 4.4.2a:{s442a}, 4.5.1a:{s451a}, 4.6.1a:{s461a}. Pelibatan:{peratus}%."
+                
+                prompt = f"""Sebagai pakar SKPMg2, tulis ulasan pencerapan profesional untuk {guru_opt}, Subjek {sub_opt}, Kelas {kls_opt}. 
+                Berdasarkan data skor berikut: {skor_summary}.
+                Berikan: 1. Kekuatan utama, 2. Aspek perlu diperbaiki, 3. Cadangan tindakan.
+                Tulis dalam Bahasa Melayu yang formal dan membina."""
+                
+                with st.spinner('Menjana laporan berdasarkan skor...'):
+                    res = model.generate_content(prompt)
+                    st.success("Laporan Berjaya!")
+                    st.markdown(res.text)
+                    st.download_button("Simpan Laporan", res.text, file_name=f"Laporan_{guru_opt}.txt")
+            except Exception as e:
+                st.error(f"Ralat: {str(e)}")
