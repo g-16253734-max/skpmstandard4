@@ -4,7 +4,6 @@ import google.generativeai as genai
 # --- CONFIG & STYLE ---
 st.set_page_config(page_title="Pencerapan SMK Kinarut", layout="centered")
 
-# CSS untuk visual yang lebih kemas dan spacing
 st.markdown("""
     <style>
     .stCheckbox { margin-bottom: 8px; padding-left: 25px; }
@@ -14,18 +13,8 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- DATABASE KELAS (IKUT IMEJ ANDA) ---
-KELAS = [
-    "--- Pilih Kelas ---",
-    "1 ALPHA", "1 BETA", "1 CRYSTAL", "1 DELTA", "1 EPSILON", "1 FULCRUM", "1 GAMMA", "1 HEXA", "1 ION", "1 JADE", "1 KAPPA", "1 LAMBDA", "1 MERCURY", "1 NEUTRON",
-    "2 ALPHA", "2 BETA", "2 CRYSTAL", "2 DELTA", "2 EPSILON", "2 FULCRUM", "2 GAMMA", "2 HEXA", "2 ION", "2 JADE", "2 KAPPA", "2 LAMBDA", "2 MERCURY", "2 NEUTRON",
-    "3 ALPHA", "3 BETA", "3 CRYSTAL", "3 DELTA", "3 EPSILON", "3 FULCRUM", "3 GAMMA", "3 HEXA", "3 ION", "3 JADE", "3 KAPPA", "3 LAMBDA", "3 MERCURY", "3 NEUTRON",
-    "4 ALPHA", "4 BETA", "4 CRYSTAL", "4 DELTA", "4 EPSILON", "4 FULCRUM", "4 GAMMA", "4 HEXA", "4 ION", "4 JADE", "4 KAPPA", "4 LAMBDA", "4 MERCURY",
-    "5 ALPHA", "5 BETA", "5 CRYSTAL", "5 DELTA", "5 EPSILON", "5 FULCRUM", "5 GAMMA", "5 HEXA", "5 ION", "5 JADE", "5 KAPPA", "5 LAMBDA", "5 MERCURY",
-    "6 ATAS 1", "6 ATAS 2", "6 ATAS 3"
-]
-
-# --- DATABASE GURU & SUBJEK ---
+# --- DATABASE KELAS ---
+KELAS = ["--- Pilih Kelas ---", "1 ALPHA", "1 BETA", "1 CRYSTAL", "1 DELTA", "1 EPSILON", "1 FULCRUM", "1 GAMMA", "1 HEXA", "1 ION", "1 JADE", "1 KAPPA", "1 LAMBDA", "1 MERCURY", "1 NEUTRON", "2 ALPHA", "2 BETA", "2 CRYSTAL", "2 DELTA", "2 EPSILON", "2 FULCRUM", "2 GAMMA", "2 HEXA", "2 ION", "2 JADE", "2 KAPPA", "2 LAMBDA", "2 MERCURY", "2 NEUTRON", "3 ALPHA", "3 BETA", "3 CRYSTAL", "3 DELTA", "3 EPSILON", "3 FULCRUM", "3 GAMMA", "3 HEXA", "3 ION", "3 JADE", "3 KAPPA", "3 LAMBDA", "3 MERCURY", "3 NEUTRON", "4 ALPHA", "4 BETA", "4 CRYSTAL", "4 DELTA", "4 EPSILON", "4 FULCRUM", "4 GAMMA", "4 HEXA", "4 ION", "4 JADE", "4 KAPPA", "4 LAMBDA", "4 MERCURY", "5 ALPHA", "5 BETA", "5 CRYSTAL", "5 DELTA", "5 EPSILON", "5 FULCRUM", "5 GAMMA", "5 HEXA", "5 ION", "5 JADE", "5 KAPPA", "5 LAMBDA", "5 MERCURY", "6 ATAS 1", "6 ATAS 2", "6 ATAS 3"]
 LIST_GURU = ["--- Pilih Nama Guru ---", "ABDULLAH BIN AG. PUTEH", "ADINA DUANE JOKINOL", "AHMAD MUSLIM BIN SAMAH", "AIDAH BINTI HANTAR", "AIDY BIN GHANI", "AJIAH BINTI MOHD HAJAR", "ALDRIANA ANDREAS", "ALYANI BINTI KOTLEY", "AMIR HUSSIN BIN MOHD AMIN", "ANIYAH BINTI JOHARI", "ANUGRAH AKHMAD BIN MOHAMAD", "ARITAH BINTI ZAKARIA", "ASMIDAR ASAHARI", "ASNIMAH BINTI ASLIE", "BASRI BIN MUSA", "BEATRICE GANNI", "BIBIANA BINTI JOHNY", "CANAI ANAK BABANG", "CERLOVELA BINTI JOSEPH", "CHIN CHING HSIA", "CHIN TZE JING", "CORNELIA SIMON SAPININ", "CRISTALELIAN JAPLIN", "DG SALEHA BINTI AG LAHAP", "DOLORES PINTOL MOINJIL", "DONA ANAK UNGGANG", "EDNA EDWARD JUAN", "EDWARD BIN APIN", "EILEEN BINTI BINAWAS", "ELIZABETH JERRY", "ELIZABETH LUNA BINTI REYNALDO LUNA", "ESTHER LEONG", "FABIANUS BIN LINUS", "FADILAH BINTI YAMBU", "FAIZAH BT MOHD DIN", "FARIDAH NASIF", "FARIZATUL AKMAM BINTI ARIF", "FARNE BINTI KINSUNG", "FATIMAH BINTI DATO MUTALIB", "FATRINA BINTI MINIS", "FAUZIAH BINTI ABBAS", "FLORA CHONG SUI MI", "FRESCILA DAVID", "HABIBAH BINTI SALLEH", "HANY PUSPITTA BINTI ROHADI", "HARNANI BINTI ALI", "HARTINI BINTI YUSSOF", "HARTINIH BINTI MUSLIM", "HASIFAH BINTI EKING", "HENDRENNA FIFIANA BINTI MOHD JOHAN", "HERDAYANI BINTI AG DAMIT @ MOHD NASIR", "HERMAH BINTI SAPRI", "HII HAI YEN", "IRINEMOLIPAT@ NURSHARINA ABDULLAH", "IRWAN BIN MOHD YUSOF", "ISMAIL BIN HUSSIN", "IZZATI BINTI SHAIFFUDDIN", "JACKQUELINE MOJINA", "JANET GERALD", "JOHANAH BINTI RUSIAN", "JOVIER RYAN JIMON", "JULIANA LEONG SIU FONG", "JULIANAH JAMES", "JULITA BINTI SUTI", "KAMARIYAH BTE MOHAMMAD SERI", "KATINA MATANLUK", "LAI SIU AUN", "LEONA A CANDIA", "LING HUI HSAI", "MAH YUEN CHOI@DANNY MAH", "MAIMUNAH BINTI JUSLEN @ ISMAIL", "MAJID BIN KIFLI", "MARIAHMAH BTE MATLIN", "MARLIZAH BINTI ABD KARIM", "MARYANIE BT BRAHIM", "MASHAYUNI BINTI AWANG BESAR", "MASNIAH BT MUKHTAR", "MASRIDAH BTE EDRIS", "MASUHARNI BT JONGKING", "MISNIE BINTI BUSU", "MOHAMED FAHMI BIN RAMLI", "MOHAMED RASHID BIN MOHAMED JOHAR", "MOHD AMIR BIN ABDUL LATIP", "MOHD RIZAL AIDEY BIN RAIMI", "MOHD SAING BIN HJ HAMZAH", "MUNIRAH BINTI KASSIM", "NADZIRAH BINTI BARSIL", "NAFSIAH BINTI ZAIRUL", "NAJIB BIN ABD LATIFF", "NAJWA SAHIRAH BINTI NORDEEN @ NARUDIN", "NEETU SHAMEETA KOUR", "NETY IRDAWATY", "NG CHEE KEAT", "NOOR AFEZAN @ ANENG BINTI JAFFAR", "NOORHAIDATUL ASMAH BINTI AB RAHMAN", "NOR AZIMAH BINTI JUSOH", "NOR EDA RAHAYU BINTI ABDUL RAHMAN", "NOR MUHAMMAD BIN JUHURI", "NOR ZAWARI BIN HARON", "NORAIMAH BINTI JULAH", "NORATINI ABD WAHID", "NORAZRI BIN MAT PIAH", "NORFAREEZIE BIN NORIZAN", "NORHAFIZAH BINTI NERAWI", "NORIMAH BINTI ASMAIL", "NORIZAH BINTI PIUT", "NORJANAH BINTI AHMAD", "NORLAILA BINTI YAAKOB", "NUR AISYAH BINTI HASAN", "NUR ELINA BINTI SAMSUDDIN", "NUR MUNIRAH BINTI MOHD", "NUR SYAFIQAH ANNISA BINTI MOHD YASSIN", "NURAZIMAH BINTI BONGOH", "NURNASUHATUL AISHAH BINTI HARIS", "NURUL IDAYU BINTI ABDUL RAJAK", "OMAR HASHIM BIN A. THALIB", "PHILIP LEE", "POJI BIN AJAMAIN", "RAFLINA BINTI RUSLI", "RAHIPAH BINTI MD JALIL", "RAMATIA BINTI DULLAH", "RITA CHAU @ RITA JOSEPH", "ROHANA BTE LATIP", "ROMLAN BIN MOHAMMAD", "ROSNAZARIZAH BINTI A. RAHMAN", "ROZY@REGINA JIMMY", "RUMAD BIN ABD RASHID", "RUPIDAH BINTI SAPPIN", "SALMIE BINTI BUSU", "SANIMAH BINTI ARRIS", "SANRA BINTI AMILASAN", "SARAH@SYRA BINTI SADAT", "SHAREN MEMALYN MENSON", "SHARIFA BINTI ABD RAZAK", "SHIRLEY CLARENCE", "SHIRLEY MAGDELIN LAWRENCE", "SIMAA SHAKIRAH BINTI SABUDIN", "SITI HAFIZAH BINTI AWANG", "SITI NUR AFIZAH BINTI SANDRIKI", "SITI WANDAN KARTINI BINTI MOHD FIRDAUS", "SOPIAH HIRWANA BINTI AMBO MASE", "SUHAIMI BIN ABD HAMID", "SULIANI BINTI DANNY", "SUSAN ARGO", "SUTIAH BINTI SALIH", "SYAKINA BINTI SALLEH", "SYAZWANI BT SAWANG", "SYLVIA ZENO", "UMI HAJJAR BINTI MUSLIM", "VERILEY BINTI VERUS", "WULAN BINTI MURUSALIN", "YAP KET KIUN", "YEOH LI-ANN", "ZAINAB BINTI JULASRIN", "ZAINUDDIN BIN AG. JALIL", "ZAMHARIR BIN AHMAD", "ZARINAH BINTI MULUK", "ZUHAMAH @ JUANAH BINTI SAPLI", "ZURIDAH @ ZURAIDAH BINTI HARITH"]
 SUBJEK = ["--- Pilih Subjek ---", "ASAS SAINS KOMPUTER", "BAHASA INGGERIS", "BAHASA MELAYU", "BIOLOGI", "EKONOMI", "FIZIK", "GEOGRAFI", "KESUSASTERAAN MELAYU", "KIMIA", "MUET", "MATEMATIK", "MATEMATIK TAMBAHAN", "PEMBINAAN DOMESTIK", "PENDIDIKAN ISLAM", "PJPK", "PENDIDIKAN MORAL", "PENDIDIKAN MUZIK", "PSV", "PENGAJIAN AM", "PERNIAGAAN", "PERTANIAN", "PRINSIP PERAKAUNAN", "RBT", "REKA CIPTA", "SAINS", "SAINS KOMPUTER", "SAINS SUKAN", "SEJARAH", "SENI VISUAL", "TASAWUR ISLAM"]
 
@@ -50,11 +39,8 @@ with col2:
 
 st.divider()
 
-# --- STANDARD 4 ---
-
-# 4.1
+# --- STANDARD 4 (Kriteria Lengkap) ---
 st.subheader("4.1: GURU SEBAGAI PERANCANG")
-
 st.markdown('<span class="section-title">4.1.1 (a) RPH: Menentukan objektif & aktiviti</span>', unsafe_allow_html=True)
 t1 = st.checkbox("i. Mengikut aras keupayaan murid", key="411ai")
 t2 = st.checkbox("ii. Mengikut peruntukan masa yang ditetapkan", key="411aii")
@@ -73,9 +59,7 @@ t8 = st.checkbox("ii. Mengikut peruntukan masa (Sumber)", key="411cii")
 t9 = st.checkbox("iii. Mengikut ketetapan kurikulum (Sumber)", key="411ciii")
 st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
-# 4.2
 st.subheader("4.2: GURU SEBAGAI PENGAWAL")
-
 st.markdown('<span class="section-title">4.2.1 (a) Mengawal proses pembelajaran</span>', unsafe_allow_html=True)
 t10 = st.checkbox("i. Mengelola isi pelajaran/skop pembelajaran", key="421ai")
 t11 = st.checkbox("ii. Menepati objektif pembelajaran", key="421aii")
@@ -94,7 +78,6 @@ t17 = st.checkbox("ii. Mewujudkan suasana yang menyeronokkan", key="422aii")
 t18 = st.checkbox("iii. Secara berhemah & menyeluruh", key="422aiii")
 st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
-# 4.3
 st.subheader("4.3: GURU SEBAGAI PEMBIMBING")
 st.markdown('<span class="section-title">4.3.1 (a) Memberi tunjuk ajar/panduan menguasai kemahiran</span>', unsafe_allow_html=True)
 t19 = st.checkbox("i. Memberi tunjuk ajar yang betul dan tepat", key="431ai")
@@ -102,7 +85,6 @@ t20 = st.checkbox("ii. Mengikut aras keupayaan murid", key="431aii")
 t21 = st.checkbox("iii. Secara berhemah & bersungguh-sungguh", key="431aiii")
 st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
-# 4.4
 st.subheader("4.4: GURU SEBAGAI PENDORONG")
 st.markdown('<span class="section-title">4.4.1 (a) Mendorong minda murid dalam PdPc</span>', unsafe_allow_html=True)
 t22 = st.checkbox("i. Merangsang murid berkomunikasi", key="441ai")
@@ -111,71 +93,56 @@ t24 = st.checkbox("iii. Secara berterusan & berkesan", key="441aiii")
 st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
 st.markdown('<span class="section-title">4.4.2 (a) Mendorong emosi murid dalam PdPc</span>', unsafe_allow_html=True)
-t25 = st.checkbox("i. Memberi pujian/galakan terhadap perlakuan positif", key="442ai")
-t26 = st.checkbox("ii. Memberi keyakinan dalam berkomunikasi", key="442aii")
-t27 = st.checkbox("iii. Secara berhemah, menyeluruh & berterusan", key="442aiii")
+t25 = st.checkbox("i. Memberi pujian/galakan", key="442ai")
+t26 = st.checkbox("ii. Memberi keyakinan diri", key="442aii")
+t27 = st.checkbox("iii. Secara berhemah & menyeluruh", key="442aiii")
 st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
-# 4.5
 st.subheader("4.5: GURU SEBAGAI PENILAI")
 st.markdown('<span class="section-title">4.5.1 (a) Melaksanakan pentaksiran</span>', unsafe_allow_html=True)
-t28 = st.checkbox("i. Menggunakan pelbagai kaedah pentaksiran", key="451ai")
-t29 = st.checkbox("ii. Memberi maklum balas hasil kerja murid", key="451aii")
-t30 = st.checkbox("iii. Secara menyeluruh & berterusan", key="451aiii")
+t28 = st.checkbox("i. Pelbagai kaedah pentaksiran", key="451ai")
+t29 = st.checkbox("ii. Maklum balas hasil kerja", key="451aii")
+t30 = st.checkbox("iii. Menyeluruh & berterusan", key="451aiii")
 st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
-# 4.6
 st.subheader("4.6: MURID SEBAGAI PEMBELAJAR AKTIF")
 peratus = st.slider("Peratus Pelibatan Murid Secara Aktif:", 0, 100, 85)
 st.markdown('<span class="section-title">4.6.1 (a) Pelibatan murid secara aktif</span>', unsafe_allow_html=True)
 t31 = st.checkbox("i. Memberi respon berkaitan isi pelajaran", key="461ai")
 t32 = st.checkbox("ii. Berkomunikasi dalam melaksanakan aktiviti", key="461aii")
-t33 = st.checkbox("iii. Menunjukkan kesungguhan/belajar secara kendiri", key="461aiii")
+t33 = st.checkbox("iii. Menunjukkan kesungguhan belajar", key="461aiii")
 
 st.divider()
 
-# --- BUTTON JANA ---
+# --- LOGIK JANA ---
 if st.button("🚀 JANA LAPORAN AI"):
-    # 1. Cek maklumat asas dulu
-    if guru_opt == "--- Pilih Nama Guru ---" or kls_opt == "--- Pilih Kelas ---" or sub_opt == "--- Pilih Subjek ---" or mod_opt == "--- Pilih Mod ---":
-        st.error("Sila lengkapkan maklumat Guru, Subjek, Kelas dan Mod Pencerapan!")
-    
+    if guru_opt == "--- Pilih Nama Guru ---" or kls_opt == "--- Pilih Kelas ---" or mod_opt == "--- Pilih Mod ---":
+        st.error("Sila lengkapkan maklumat utama!")
     else:
-        # 2. Logik Semakan Kod Autoriti
-        # Jika bukan "Kendiri", wajib semak password
         is_authorized = False
-        
         if mod_opt == "Kendiri":
             is_authorized = True
+        elif kod_admin == "KINARUT2024":
+            is_authorized = True
         else:
-            if kod_admin == "KINARUT2024":
-                is_authorized = True
-            else:
-                st.error("Kod Autoriti Salah! Hanya pencerapan 'Kendiri' tidak memerlukan kod.")
+            st.error("Kod Autoriti Salah! Hanya 'Kendiri' tidak memerlukan kod.")
 
-        # 3. Jika lulus semakan, baru panggil AI
         if is_authorized:
             try:
+                # Guna 'gemini-pro' untuk kestabilan lebih tinggi
                 API_KEY = st.secrets["GEMINI_API_KEY"]
                 genai.configure(api_key=API_KEY)
-                model = genai.GenerativeModel('gemini-1.5-flash')
+                model = genai.GenerativeModel('gemini-pro') 
                 
-                summary = f"Guru: {guru_opt}, Subjek: {sub_opt}, Kelas: {kls_opt}, Mod: {mod_opt}. Pelibatan Murid: {peratus}%."
+                sum_text = f"Pencerapan {mod_opt} untuk {guru_opt}, Subjek {sub_opt}, Kelas {kls_opt}. Pelibatan: {peratus}%."
                 
-                prompt = f"""
-                Tulis ulasan profesional SKPMg2 Standard 4 untuk:
-                {summary}.
+                prompt = f"""Tulis laporan SKPMg2 Standard 4 dalam Bahasa Melayu untuk: {sum_text}. 
+                Sediakan: 1. Kekuatan, 2. Penambahbaikan, 3. Cadangan. Gunakan nada profesional."""
                 
-                Format:
-                1. RUMUSAN KEKUATAN.
-                2. KELEMAHAN & PENAMBAHBAIKAN.
-                3. CADANGAN INTERVENSI.
-                """
-                
-                with st.spinner('AI sedang memproses ulasan kendiri anda...'):
+                with st.spinner('Menjana laporan...'):
                     res = model.generate_content(prompt)
-                    st.success("Laporan Berjaya Dijana!")
+                    st.success("Berjaya!")
                     st.markdown(res.text)
-                    st.download_button("📥 Muat Turun Laporan", res.text, file_name=f"Kendiri_{guru_opt}.txt")
+                    st.download_button("Simpan Laporan", res.text, file_name=f"Laporan_{guru_opt}.txt")
             except Exception as e:
-                st.error(f"Ralat API: Sila pastikan Secrets sudah diset. {e}")
+                st.error(f"Ralat API: Sila pastikan API Key dimasukkan di Secrets Streamlit. (Error: {e})")
