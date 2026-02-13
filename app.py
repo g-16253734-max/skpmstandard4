@@ -138,17 +138,29 @@ for k, label in [("a", "Semak kerja"), ("b", "Pentaksiran"), ("c", "Respon"), ("
 
 # --- 4.6.1 ---
 st.markdown('<span class="section-title">4.6: MURID SEBAGAI PEMBELAJAR AKTIF</span>', unsafe_allow_html=True)
-for k, label in [("a", "Respon"), ("b", "Komunikasi"), ("c", "Kolaboratif"), ("d", "KBAT"), ("e", "Kesungguhan"), ("f", "Kaitkan isu")]:
+items_461 = [("a", "Respon isi pelajaran"), ("b", "Komunikasi"), ("c", "Kolaboratif"), ("d", "KBAT"), ("e", "Kesungguhan"), ("f", "Kaitkan isu")]
+for k, label in items_461:
     st.markdown(f'<div class="item-header">4.6.1 {label}</div>', unsafe_allow_html=True)
     pct = st.selectbox("Penglibatan Murid:", ["50%-100%", "25%-49%", "10%-24%", "Kurang 10%"], key=f"461{k}p")
     k1 = st.checkbox("ii. Selaras objektif", key=f"461{k}k1")
     k2 = st.checkbox("iii. Dengan yakin", key=f"461{k}k2")
     k3 = st.checkbox("iv. Berhemah/Bersungguh", key=f"461{k}k3")
+    
+    # Panggil fungsi yang dah fixed
     skor = hitung_skor_46(pct, k1, k2, k3)
     total_mata += skor; bil_item += 1
     st.markdown(f'<div class="score-badge">Skor: {skor}</div>', unsafe_allow_html=True)
 
 # --- TOTAL ---
+st.divider()
+final_peratus = (total_mata / (bil_item * 4)) * 100 if bil_item > 0 else 0
+st.markdown(f"""
+    <div class="total-card">
+        <h3>Keputusan Penuh Pencerapan</h3>
+        <h1 style="color:#1E88E5;">{final_peratus:.2f}%</h1>
+        <p>Jumlah Mata Skor: {total_mata} / {bil_item * 4}</p>
+    </div>
+""", unsafe_allow_html=True)# --- TOTAL ---
 st.divider()
 final_peratus = (total_mata / (bil_item * 4)) * 100
 st.markdown(f"""
